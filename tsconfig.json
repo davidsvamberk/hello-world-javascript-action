@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "outDir": "./lib",
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "newLine": "lf"
+  },
+  "include": [
+    "typings/**/*.d.ts",
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
+}

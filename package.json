@@ -2,9 +2,16 @@
   "name": "hello-world-javascript-action",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint .",
+    "fix": "prettier --write **/*.ts && eslint . --fix",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run build && npm run lint && npm run format-check && npm run package && npm test"
   },
   "repository": {
     "type": "git",
@@ -20,5 +27,21 @@
   "dependencies": {
     "@actions/core": "^1.9.1",
     "@actions/github": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.4",
+    "@types/node": "^18.7.21",
+    "@types/node-fetch": "^2.6.2",
+    "@typescript-eslint/parser": "^5.38.0",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "8.22.0",
+    "eslint-plugin-github": "^4.3.6",
+    "eslint-plugin-jest": "^27.0.4",
+    "jest": "^28.1.1",
+    "js-yaml": "^4.1.0",
+    "nock": "^13.2.8",
+    "prettier": "^2.7.1",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.7.4"
   }
 }
