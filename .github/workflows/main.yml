@@ -15,5 +15,5 @@ jobs:
         with:
           expire-in-days: '5'
       # Use the output from the `version` step
-      - name: Get the output time
+      - name: Get the output version
         run: echo "Version - ${{ steps.version.outputs.version }}"
