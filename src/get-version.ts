@@ -10,20 +10,14 @@ export const getVersion = async (expireInDays: string): Promise<string> => {
   const expDateSuffix: string = formatDate(addToCurrentDate(expDaysNumber))
   core.debug(`expiration date suffix: ${expDateSuffix}`)
 
-  let version = '1.2.3'
-  if (
-    process.env.GITHUB_REF_TYPE !== 'tag' ||
-    process.env.APP_VERSION?.endsWith('-SNAPSHOT')
-  ) {
+  let version
+  if (process.env.GITHUB_REF_TYPE === 'tag') {
+    version = `${process.env.GITHUB_REF_NAME?.replace('v', '')}`
+  } else {
     version = `0.0.0-${
       process.env.GITHUB_REF_NAME
-    }.${process.env.GITHUB_SHA?.substring(8)}-expire${expDateSuffix}`
+    }.${process.env.GITHUB_SHA?.substring(0, 8)}-expire${expDateSuffix}`
   }
-
-  // VERSION=$(yq e -p=xml '.project.version' pom.xml)
-  // if [ "$GITHUB_REF_TYPE" != "tag" ] || [[ "$APP_VERSION" == *"-SNAPSHOT" ]]; then
-  // VERSION="0.0.0-${GITHUB_REF_NAME//[\/]/-}.${GITHUB_SHA::8}-expire$(date -d "today + $EXPIRE_IN" "+%y%m%d%H%M")"    fi
-  // echo "::set-output name=version::$VERSION"
 
   return version
 }

@@ -21,6 +21,7 @@ async function run(): Promise<void> {
     const version = await getVersion(expireInDays)
 
     core.setOutput(inOut.OUTPUT_VERSION, version)
+    core.notice('', {title: version})
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
     else core.setFailed(String(error))

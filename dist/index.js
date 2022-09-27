@@ -40,15 +40,13 @@ const getVersion = async (expireInDays) => {
     }
     const expDateSuffix = (0, date_1.formatDate)((0, date_1.addToCurrentDate)(expDaysNumber));
     core.debug(`expiration date suffix: ${expDateSuffix}`);
-    let version = '1.2.3';
-    if (process.env.GITHUB_REF_TYPE !== 'tag' ||
-        process.env.APP_VERSION?.endsWith('-SNAPSHOT')) {
-        version = `0.0.0-${process.env.GITHUB_REF_NAME}.${process.env.GITHUB_SHA?.substring(8)}-expire${expDateSuffix}`;
+    let version;
+    if (process.env.GITHUB_REF_TYPE === 'tag') {
+        version = `${process.env.GITHUB_REF_NAME?.replace('v', '')}`;
     }
-    // VERSION=$(yq e -p=xml '.project.version' pom.xml)
-    // if [ "$GITHUB_REF_TYPE" != "tag" ] || [[ "$APP_VERSION" == *"-SNAPSHOT" ]]; then
-    // VERSION="0.0.0-${GITHUB_REF_NAME//[\/]/-}.${GITHUB_SHA::8}-expire$(date -d "today + $EXPIRE_IN" "+%y%m%d%H%M")"    fi
-    // echo "::set-output name=version::$VERSION"
+    else {
+        version = `0.0.0-${process.env.GITHUB_REF_NAME}.${process.env.GITHUB_SHA?.substring(0, 8)}-expire${expDateSuffix}`;
+    }
     return version;
 };
 exports.getVersion = getVersion;
@@ -119,6 +117,7 @@ async function run() {
         core.debug(`${inOut.INPUT_EXPIRE_IN_DAYS}: ${expireInDays}`);
         const version = await (0, get_version_1.getVersion)(expireInDays);
         core.setOutput(inOut.OUTPUT_VERSION, version);
+        core.notice('', { title: version });
     }
     catch (error) {
         if (error instanceof Error)
