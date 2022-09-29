@@ -1,7 +1,18 @@
-on: [push]
+name: Action Tests
+
+on:
+  push:
+    branches: [ "master" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  hello_world_job:
+  get-version:
     runs-on: ubuntu-latest
     name: A job to get version
     steps:
@@ -9,11 +20,13 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get version action step
+
+      - name: Get version action
         uses: ./ # Uses an action in the root directory
         id: version
         with:
           expire-in-days: '5'
+
       # Use the output from the `version` step
       - name: Get the output version
         run: echo "Version - ${{ steps.version.outputs.version }}"
