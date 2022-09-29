@@ -117,7 +117,7 @@ async function run() {
         core.debug(`${inOut.INPUT_EXPIRE_IN_DAYS}: ${expireInDays}`);
         const version = await (0, get_version_1.getVersion)(expireInDays);
         core.setOutput(inOut.OUTPUT_VERSION, version);
-        core.notice('', { title: version });
+        core.notice('version', { title: version });
     }
     catch (error) {
         if (error instanceof Error)
